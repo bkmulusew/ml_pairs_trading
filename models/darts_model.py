@@ -19,14 +19,15 @@ class DartsFinancialForecastingModel(FinancialForecastingModel):
             return NBEATSModel(
                 input_chunk_length=self.model_config.INPUT_CHUNK_LENGTH,
                 output_chunk_length=self.model_config.OUTPUT_CHUNK_LENGTH,
-                num_stacks=4,
+                num_layers=5,
                 num_blocks=1,
-                num_layers=2,
+                num_stacks=2,
                 layer_widths=512,
                 dropout=0.2,
                 n_epochs=self.model_config.N_EPOCHS,
                 batch_size=self.model_config.BATCH_SIZE,
-                model_name="nbeats_run",
+                model_name="nbeats",
+                optimizer_kwargs={"lr": 0.0001},
                 pl_trainer_kwargs={
                 "accelerator": "gpu",
                 "devices": [0]
@@ -37,13 +38,15 @@ class DartsFinancialForecastingModel(FinancialForecastingModel):
             return NHiTSModel(
                 input_chunk_length=self.model_config.INPUT_CHUNK_LENGTH,
                 output_chunk_length=self.model_config.OUTPUT_CHUNK_LENGTH,
-                num_stacks=4,
+                num_layers=5,
                 num_blocks=1,
-                num_layers=2,
+                num_stacks=2,
+                layer_widths=512,
                 dropout=0.2,
                 n_epochs=self.model_config.N_EPOCHS,
                 batch_size=self.model_config.BATCH_SIZE,
-                model_name="nbeats_run",
+                model_name="nhits",
+                optimizer_kwargs={"lr": 0.0001},
                 pl_trainer_kwargs={
                 "accelerator": "gpu",
                 "devices": [0]
@@ -52,14 +55,19 @@ class DartsFinancialForecastingModel(FinancialForecastingModel):
 
         elif model_name == "transformer":
             return TransformerModel(
-                input_chunk_length=50,
-                output_chunk_length=1,
+                input_chunk_length=self.model_config.INPUT_CHUNK_LENGTH,
+                output_chunk_length=self.model_config.OUTPUT_CHUNK_LENGTH,
                 n_epochs=self.model_config.N_EPOCHS,
                 batch_size=self.model_config.BATCH_SIZE,
                 nhead=4,
-                d_model=128,
-                dropout=0.1,
-                model_name="transformer_run",
+                d_model=256,
+                num_encoder_layers = 3,
+                num_decoder_layers = 3,
+                dim_feedforward = 16,
+                norm_type = "LayerNormNoBias",
+                dropout=0.2,
+                model_name="transformer",
+                optimizer_kwargs={"lr": 0.0001},
                 pl_trainer_kwargs={
                 "accelerator": "gpu",
                 "devices": [0]
@@ -70,15 +78,16 @@ class DartsFinancialForecastingModel(FinancialForecastingModel):
             return TCNModel(
                 input_chunk_length=self.model_config.INPUT_CHUNK_LENGTH,
                 output_chunk_length=self.model_config.OUTPUT_CHUNK_LENGTH,
-                kernel_size = 5,
-                num_filters = 32,
+                kernel_size = 3,
+                num_filters = 64,
                 num_layers = 8,
                 dilation_base = 2,
                 n_epochs=self.model_config.N_EPOCHS,
                 batch_size=self.model_config.BATCH_SIZE,
                 weight_norm = True,
-                random_state = 42,
+                model_name="tcn",
                 dropout = 0.2,
+                optimizer_kwargs={"lr": 0.0001},
                 pl_trainer_kwargs = {
                     "accelerator": "gpu",
                     "devices": [0]

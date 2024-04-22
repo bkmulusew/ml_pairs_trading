@@ -24,7 +24,7 @@ class TfFinancialForecastingModel(FinancialForecastingModel):
             x = Bidirectional(LSTM(128, return_sequences=True))(inp)
             x = Bidirectional(LSTM(128, return_sequences=True))(x)
 
-            x = MultiHeadAttention(num_heads=4, key_dim=128, dropout=0.1)(x, x, x)
+            x = MultiHeadAttention(num_heads=16, key_dim=128, dropout=0.1)(x, x, x)
 
             avg_pool = GlobalAveragePooling1D()(x)
             max_pool = GlobalMaxPooling1D()(x)
@@ -35,7 +35,7 @@ class TfFinancialForecastingModel(FinancialForecastingModel):
             model = Model(inputs = inp, outputs = x)
             model.compile(
                 loss = "mean_squared_error",
-                optimizer = Adam(learning_rate=0.001))
+                optimizer = Adam(learning_rate=0.0001))
 
             return model
 
