@@ -8,18 +8,15 @@ from .networks import CriticNetwork
 
 class Critic:
     def __init__(self, critic_dims, action_dims, agent_idx, chkpt_dir,
-                    beta=0.0001, fc1=64, fc2=64, gamma=0.995, tau=0.01):
+                 beta=0.0001, fc1=64, fc2=64, gamma=0.995, tau=0.01):
         self.gamma = gamma
         self.tau = tau
         self.action_dims = action_dims
         self.agent_name = 'agent_%s' % agent_idx
-        self.critic = CriticNetwork(beta, critic_dims,
-                            fc1, fc2, action_dims,
-                            chkpt_dir=chkpt_dir, name=self.agent_name+'_critic')
-        self.target_critic = CriticNetwork(beta, critic_dims,
-                                            fc1, fc2, action_dims,
-                                            chkpt_dir=chkpt_dir,
-                                            name=self.agent_name+'_target_critic')
+        self.critic = CriticNetwork(beta, critic_dims, fc1, fc2, action_dims,
+                                    chkpt_dir=chkpt_dir, name=self.agent_name+'_critic')
+        self.target_critic = CriticNetwork(beta, critic_dims, fc1, fc2, action_dims,
+                                           chkpt_dir=chkpt_dir, name=self.agent_name+'_target_critic')
 
         self.update_network_parameters(tau=1)
 

@@ -11,9 +11,9 @@ import torch.nn.functional as F
 
 class MADDPG:
     """Multi Agent Deep Deterministic Policy Gradient"""
-    """3 actors and 1 critic coorperating."""
+    """3 coorperating actors and 1 critic."""
     def __init__(self, actor_dims, critic_dims, n_actors, action_dims,
-                    alpha=0.0001, beta=0.0001, chkpt_dir='tmp/maddpg/'):
+                 alpha=0.0001, beta=0.0001, chkpt_dir='tmp/maddpg/'):
         self.actors = []
         self.n_actors = n_actors
         self.action_dims = action_dims

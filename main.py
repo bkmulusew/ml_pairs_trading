@@ -86,7 +86,7 @@ def run_rl_based_trading_strategy():
                             alpha=0.0001, beta=0.0001, chkpt_dir='tmp/maddpg/')
 
     memory = MultiAgentReplayBuffer(20000, critic_dims, actor_dims,
-                        action_dims, n_actors, batch_size=2)
+                        action_dims, n_actors, batch_size=256)
 
     PRINT_INTERVAL = 1
     EPISODES = 50
@@ -117,7 +117,7 @@ def run_rl_based_trading_strategy():
 
             maddpg_agents.learn(memory)
 
-            obs = [train_states_space[(state_space_index + 1) % len(train_states_space)]] * n_actors
+            obs = obs_
 
             total_steps += 1
             episode_step += 1
