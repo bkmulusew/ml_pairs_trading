@@ -8,7 +8,7 @@ import numpy as np
 
 class MultiAgentReplayBuffer:
     def __init__(self, max_size, critic_dims, actor_dims,
-            action_dims, n_agents, batch_size):
+                 action_dims, n_agents, batch_size):
         self.mem_size = max_size
         self.mem_cntr = 0
         self.n_agents = n_agents
@@ -38,7 +38,7 @@ class MultiAgentReplayBuffer:
 
 
     def store_transition(self, raw_obs, state, action, reward,
-                               raw_obs_, state_, done):
+                         raw_obs_, state_, done):
         index = self.mem_cntr % self.mem_size
 
         for agent_idx in range(self.n_agents):
