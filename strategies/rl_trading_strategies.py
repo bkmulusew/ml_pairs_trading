@@ -1,6 +1,6 @@
 """
 Implementation of reward and trading policy from the paper titled "Improved pairs trading strategy using two-level reinforcement
-    learning framework" by Zhizhao Xu and Chao Luo (https://cs.nyu.edu/~shasha/papers/pairstrading_reinforcementlearning.pdf)
+    learning framework" by Zhizhao Xu and Chao Luo (https://www.sciencedirect.com/science/article/abs/pii/S0952197623013325)
 """
 
 from .base_trading_strategies import TradingStrategies

@@ -10,6 +10,7 @@ import numpy as np
 from models import MultiAgentReplayBuffer
 from models import MADDPG
 from strategies import RLTradingStrategy
+import argparse
 
 def obs_list_to_state_vector(observation):
     state = np.array([])
@@ -17,9 +18,10 @@ def obs_list_to_state_vector(observation):
         state = np.concatenate([state, obs])
     return state
 
-def run_sl_based_trading_strategy():
-    model_config = ModelConfig()
+def float_list(strings):
+    return [float(item) for item in strings.split(',')]
 
+def run_sl_based_trading_strategy(model_config, trade_thresholds):
     eval_metrics = ModelEvaluationMetrics()
 
     # Initialize a DataProcessor instance to preprocess and manage the dataset.
@@ -64,10 +66,9 @@ def run_sl_based_trading_strategy():
 
     # Simulate trading strategies using the actual and predicted values, along with the numerator and
     # denominator prices, to assess the financial performance of the forecasting model.
-    trading_simulator.simulate_trading_with_strategies(true_values, predicted_values, numerator_prices, denominator_prices)
+    trading_simulator.simulate_trading_with_strategies(true_values, predicted_values, numerator_prices, denominator_prices, trade_thresholds)
 
-def run_rl_based_trading_strategy():
-    model_config = ModelConfig()
+def run_rl_based_trading_strategy(model_config):
 
     # Initialize a DataProcessor instance to preprocess and manage the dataset.
     dataProcessor = DataProcessor(model_config)
@@ -138,5 +139,47 @@ def run_rl_based_trading_strategy():
 
     print('total profit {:.1f}'.format(trading_strategy.total_profit_or_loss))
 
+def run(args):
+
+    model_config = ModelConfig()
+    model_config.INPUT_CHUNK_LENGTH = args.input_chunk_length
+    model_config.OUTPUT_CHUNK_LENGTH = args.output_chunk_length
+    model_config.N_EPOCHS = args.n_epochs
+    model_config.BATCH_SIZE = args.batch_size
+    model_config.TRAIN_RATIO = args.train_ratio
+    model_config.DATA_FILE_PATH = args.data_path
+    thresholds = [float(threshold) for threshold in args.thresholds.split(',')]
+
+    if args.rl:
+        run_rl_based_trading_strategy(model_config)
+    if args.sl:
+        run_sl_based_trading_strategy(model_config, thresholds)
+
 if __name__ == "__main__":
-    run_rl_based_trading_strategy()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--rl", action="store_true", default=False, help="Enable the reinforcement learning (RL) based model.")
+    parser.add_argument("--sl", action="store_true", default=False, help="Enable the supervised learning (SL) based model.")
+    parser.add_argument(
+        "--sl_model",
+        type=str,
+        default="tcn",
+        help="Specify the supervised learning model to use. Supported models include 'bilstm' for Bidirectional LSTM, \
+            'nbeats' for NBEATS, 'nhits' for NHiTS, 'transformer' for Transformer, and 'tcn' for Temporal Convolutional Network. \
+            Default is 'tcn'."
+    )
+    parser.add_argument("--input_chunk_length", type=int, default=50, help="Length of the input sequences.")
+    parser.add_argument("--output_chunk_length", type=int, default=1, help="Length of the output sequences.")
+    parser.add_argument("--n_epochs", type=int, default=50, help="Number of training epochs.")
+    parser.add_argument("--batch_size", type=int, default=1024, help="Batch size for training.")
+    parser.add_argument("--train_ratio", type=float, default=0.5, help="Ratio of training data used in the train/test split.")
+    parser.add_argument("--data_path", type=str, default="", help="Path to the training data.", required=True)
+    parser.add_argument(
+        "--thresholds",
+        type=str,
+        default="0,0.00025,0.0005,0.001",
+        help="Specify a list of threshold values for trading. Provide the values as a comma-separated list of size 4. \
+            For example, use '--threshold 0,0.00025,0.0005,0.001' to set thresholds at 0, 0.00025, 0.0005, and 0.001."
+    )
+
+    args = parser.parse_args()
+    run(args)
