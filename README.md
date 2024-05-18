@@ -51,7 +51,7 @@ This ratio will be used as the target variable in the model training and trading
 
 ## Example Usage
 ```bash
-python run_trading_strategy.py --sl  --data_path bbdc3_4_min.csv --n_epochs 3
+python run_trading_strategy.py --sl  --sl_model tcn --data_path /path/to/data --n_epochs 3
 ```
 
 The full list of flags and options for the python script is as follows:
