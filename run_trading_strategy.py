@@ -21,7 +21,7 @@ def obs_list_to_state_vector(observation):
 def float_list(strings):
     return [float(item) for item in strings.split(',')]
 
-def run_sl_based_trading_strategy(model_config, trade_thresholds):
+def run_sl_based_trading_strategy(model_name, model_config, trade_thresholds):
     eval_metrics = ModelEvaluationMetrics()
 
     # Initialize a DataProcessor instance to preprocess and manage the dataset.
@@ -30,19 +30,20 @@ def run_sl_based_trading_strategy(model_config, trade_thresholds):
     # Initialize a trading simulator.
     trading_simulator = TradingSimulator()
 
-    # Instantiate a FinancialForecastingModel with the TCN and DataProcessor. This model
-    # will be used for preparing the data, training, and making predictions.
-    predictor = DartsFinancialForecastingModel("tcn", dataProcessor, model_config)
-
-    # Split the dataset into training, validation, and test series and then scale the data appropriately.
-    train_series, valid_series, test_series = predictor.split_and_scale_data()
-
-    # Train the model using the training and validation series.
-    predictor.train(train_series, valid_series)
-
-    # Generate predictions for the test series and retrieve the actual values for comparison.
-    predicted_values = predictor.generate_predictions(test_series)
-    true_values = predictor.get_true_values(test_series)
+    # Instantiate a financial forecasting model, train, evaluate, and predict.
+    if model_name == 'bilstm':
+        predictor = TfFinancialForecastingModel(model_name, dataProcessor, model_config)
+        processed_data = predictor.split_and_scale_data()
+        predictor.train(processed_data['x_train'], processed_data['y_train'], processed_data['x_valid'], processed_data['y_valid'])
+        generated_values = predictor.generate_predictions(processed_data['x_test'], processed_data['y_test'])
+        predicted_values = generated_values['predicted_values']
+        true_values = generated_values['true_values']
+    else:
+        predictor = DartsFinancialForecastingModel(model_name, dataProcessor, model_config)
+        train_series, valid_series, test_series = predictor.split_and_scale_data()
+        predictor.train(train_series, valid_series)
+        predicted_values = predictor.generate_predictions(test_series)
+        true_values = predictor.get_true_values(test_series)
 
     # Plot the actual and predicted values using matplotlib to visualize the model's performance.
     plt.plot(true_values, color = 'blue', label = 'True')
@@ -148,12 +149,14 @@ def run(args):
     model_config.BATCH_SIZE = args.batch_size
     model_config.TRAIN_RATIO = args.train_ratio
     model_config.DATA_FILE_PATH = args.data_path
+
+    model_name = args.sl_model
     thresholds = [float(threshold) for threshold in args.thresholds.split(',')]
 
     if args.rl:
         run_rl_based_trading_strategy(model_config)
     if args.sl:
-        run_sl_based_trading_strategy(model_config, thresholds)
+        run_sl_based_trading_strategy(model_name, model_config, thresholds)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
