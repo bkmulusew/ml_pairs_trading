@@ -32,6 +32,7 @@ Once the changes are predicted, different pairs trading strategies are used to y
 ## Dataset
 Before training or evaluating the model and running the trading simulation with different pairs trading strategies, it is necessary to have a dataset. The dataset should be in the following format:
 | Time	                  | A	    | B     |
+| :---                    | :---: | :---: |
 | 2023 01 03 10 09 00.000	| 13.15	| 14.75 |
 | 2023 01 03 10 10 00.000	| 13.1	| 14.68 |
 | 2023 01 03 10 11 00.000	| 13.1	| 14.65 |
