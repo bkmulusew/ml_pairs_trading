@@ -1,12 +1,10 @@
 from models import FinancialForecastingModel
-from utils import ModelConfig
 import numpy as np
 from sklearn.utils import shuffle
 from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
-from tensorflow.keras import Model, Input
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.layers import MultiHeadAttention, Dense, Dropout, Bidirectional, LSTM, GlobalAveragePooling1D, GlobalMaxPooling1D, concatenate
+from keras import Model, Input
+from keras.optimizers import Adam
+from keras.layers import MultiHeadAttention, Dense, Bidirectional, LSTM, GlobalAveragePooling1D, GlobalMaxPooling1D, concatenate
 
 class TfFinancialForecastingModel(FinancialForecastingModel):
     """A financial forecasting model based on the Tensorflow library."""

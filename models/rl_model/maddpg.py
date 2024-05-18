@@ -1,13 +1,12 @@
 """
 Implementation of TS-MADDPG from the paper titled "Improved pairs trading strategy using two-level reinforcement
-    learning framework" by Zhizhao Xu and Chao Luo (https://cs.nyu.edu/~shasha/papers/pairstrading_reinforcementlearning.pdf)
+    learning framework" by Zhizhao Xu and Chao Luo (https://www.sciencedirect.com/science/article/abs/pii/S0952197623013325)
 Heavily adapted from Phil Tabor's MADDPG implementation (https://github.com/philtabor/Multi-Agent-Deep-Deterministic-Policy-Gradients)
 """
 
 from .actor import Actor
 from .critic import Critic
 import torch as T
-import torch.nn.functional as F
 
 class MADDPG:
     """Multi Agent Deep Deterministic Policy Gradient"""

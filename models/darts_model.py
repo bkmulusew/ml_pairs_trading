@@ -1,5 +1,4 @@
 from models import FinancialForecastingModel
-from utils import ModelConfig
 import pandas as pd
 from darts import TimeSeries
 from darts.dataprocessing.transformers import Scaler

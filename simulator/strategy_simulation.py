@@ -9,9 +9,8 @@ class TradingSimulator:
         ground_truth_strategy = SLTradingStrategy("ground truth", trade_thresholds)
         return pure_forcasting_strategy, mean_reversion_strategy, hybrid_strategy, ground_truth_strategy
 
-    def simulate_trading_with_strategies(self, true_values, predicted_values, numerator_prices, denominator_prices):
+    def simulate_trading_with_strategies(self, true_values, predicted_values, numerator_prices, denominator_prices, trade_thresholds):
         """Simulates trading with the strategies."""
-        trade_thresholds = [0, 0.00025, 0.0005, 0.001]
         pure_forcasting_strategy, mean_reversion_strategy, hybrid_strategy, ground_truth_strategy = self.initialize_strategies(trade_thresholds)
 
         for i in range(2, len(true_values)):
