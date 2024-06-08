@@ -49,6 +49,8 @@ The pair ratio p is calculated by dividing the price of stock A by the price of 
 
 This ratio will be used as the target variable in the model training and trading strategies.
 
+The dataset used to train, validate, and test the models are found in the ml_pairs_trading/dataset directory.
+
 ## Example Usage
 ```bash
 python run_trading_strategy.py --sl  --sl_model tcn --data_path /path/to/data --n_epochs 3
