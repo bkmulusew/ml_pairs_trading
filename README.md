@@ -7,13 +7,14 @@
 - [Contributors](#contributors)
 
 ## Introduction
+This repo is the official implementation of [Machine Learning Enhanced Pairs Trading](https://www.mdpi.com/2571-9394/6/2/24), accepted by MDPI Forecasting 2024.
 In this project, we explore and apply various deep learning models to predict changes in the price ratio of closely related stock pairs. Our approach includes the utilization of the following deep learning models:
 - Bidirectional Long Short-Term Memory (BiLSTM) with Attention
 - Transformers
 - N-BEATS (Neural Basis Expansion Analysis)
 - N-HiTS (Neural Hierarchical Interpolation for Time Series)
 - Temporal Convolutional Networks (TCNs)
-- MADDPG (Multi-Agent Deep Deterministic Policy Gradient) with Three Actors and One Critic -- This implementation follows the TS-MADDPG framework as described in the paper "Improved pairs trading strategy using two-level reinforcement learning framework" by Zhizhao Xu and Chao Luo (https://www.sciencedirect.com/science/article/abs/pii/S0952197623013325).
+- MADDPG (Multi-Agent Deep Deterministic Policy Gradient) with Three Actors and One Critic -- This implementation follows the TS-MADDPG framework as described in the paper [Improved pairs trading strategy using two-level reinforcement learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0952197623013325) by Zhizhao Xu and Chao Luo.
 
 Once the changes are predicted, different pairs trading strategies are used to yield profit. Our approach includes the utilization of the following pairs trading strategies:
 - Reversion Strategy :
