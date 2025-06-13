@@ -140,7 +140,7 @@ class DartsFinancialForecastingModel(FinancialForecastingModel):
 
         predicted_df = pd.DataFrame(predicted_values, columns=['predicted'])
         tseries_predicted = TimeSeries.from_dataframe(predicted_df, value_cols='predicted')
-        tseries_predicted = self.scaler.inverse_transform(tseries_predicted).pd_series(copy=True)
+        tseries_predicted = self.scaler.inverse_transform(tseries_predicted).to_series(copy=True)
         predicted_values = tseries_predicted.values.tolist()
 
         return predicted_values
