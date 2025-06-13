@@ -148,6 +148,6 @@ class DartsFinancialForecastingModel(FinancialForecastingModel):
     def get_true_values(self, test_series):
         """Retrieves true values from the test series after scaling back."""
         test_series_inverse = self.scaler.inverse_transform(test_series)
-        true_df = test_series_inverse.pd_series(copy=True)
+        true_df = test_series_inverse.to_series(copy=True)
         true_values = true_df[self.model_config.INPUT_CHUNK_LENGTH:].values.tolist()
         return true_values
